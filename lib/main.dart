@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:hr_dashboard/constants/sensitive.dart';
 import 'package:hr_dashboard/view/dashboard/dashboard_view.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Supabase.initialize(
+    url: supabaseUrl,
+    anonKey: supabaseAnonKey,
+  );
   runApp(
     MaterialApp(
       title: 'HR Dashboard',
