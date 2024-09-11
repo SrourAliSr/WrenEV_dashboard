@@ -2,7 +2,8 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 class MonthsDropDownMenuWidget extends StatefulWidget {
-  const MonthsDropDownMenuWidget({super.key});
+  final void Function(int x) beforeXMonths;
+  const MonthsDropDownMenuWidget({super.key, required this.beforeXMonths});
 
   @override
   State<MonthsDropDownMenuWidget> createState() =>
@@ -60,6 +61,7 @@ class _MonthsDropDownMenuWidgetState extends State<MonthsDropDownMenuWidget> {
                 monthIndex = value;
               },
             );
+            widget.beforeXMonths(value + 1);
           }
         },
       ),

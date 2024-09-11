@@ -22,6 +22,6 @@ class EmployeePublic implements EmployeeServices {
       await _employeeServices.fetchJobSummary();
 
   @override
-  Future<Map<String, List>> fetchSalary() async =>
-      await _employeeServices.fetchSalary();
+  Future<Map<String, List>> fetchSalary(int beforeXMonths) async =>
+      await _employeeServices.fetchSalary(beforeXMonths);
 }

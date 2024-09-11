@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:hr_dashboard/model/employee_statistics_model.dart';
 import 'package:hr_dashboard/model/salary_model.dart';
 import 'package:hr_dashboard/services/abstract_employee.dart';
@@ -57,23 +59,35 @@ class EmployeePrivate implements EmployeeServices {
   }
 
   @override
-  Future<Map<String, List>> fetchSalary() async {
-    final currentYear = DateTime.now().year;
+  Future<Map<String, List>> fetchSalary(int beforeXMonths) async {
+    final currentDate = DateTime.now();
+    final timeInterval =
+        DateTime(currentDate.year, currentDate.month - beforeXMonths, 1);
+    final timeIntervalStringFormate =
+        '${timeInterval.year}-${timeInterval.month}-${timeInterval.day}';
+    try {
+      final data = await supabase
+          .from('Salary')
+          .select()
+          .gte('date', timeIntervalStringFormate)
+          .order('date', ascending: true);
 
-    final productList = await supabase
-        .from('Salary')
-        .select()
-        .gte('date', '$currentYear-1-1')
-        .eq('team', 'product');
-    final projectList = await supabase
-        .from('Salary')
-        .select()
-        .gte('date', '$currentYear-1-1')
-        .eq('team', 'project');
+      final productList = data
+          .where((element) => element['team'] == 'product')
+          .map((e) => e)
+          .toList();
+      final projectList = data
+          .where((element) => element['team'] == 'project')
+          .map((e) => e)
+          .toList();
 
-    Salary salary = Salary(product: productList, project: projectList);
+      Salary salary = Salary(product: productList, project: projectList);
 
-    return salary.toMap();
+      return salary.toMap();
+    } catch (e) {
+      log(e.toString());
+      return {};
+    }
   }
 
   @override

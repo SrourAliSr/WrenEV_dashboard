@@ -1,7 +1,7 @@
 abstract class EmployeeServices {
   //employee statstics panel
   Future<Map> fetchEmployeeStatistics();
-  Future<Map<String, List>> fetchSalary();
+  Future<Map<String, List>> fetchSalary(int beforeXMonths);
 
   //employee panel
   Future<List> fetchEmployees();
