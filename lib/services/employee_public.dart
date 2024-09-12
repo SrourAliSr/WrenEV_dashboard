@@ -1,6 +1,7 @@
 import 'package:hr_dashboard/model/employee_model.dart';
 import 'package:hr_dashboard/model/employee_statistics_model.dart';
 import 'package:hr_dashboard/model/pie_chart_data_model.dart';
+import 'package:hr_dashboard/model/salary_model.dart';
 import 'package:hr_dashboard/services/abstract_employee.dart';
 
 class EmployeePublic implements EmployeeServices {
@@ -24,7 +25,7 @@ class EmployeePublic implements EmployeeServices {
           searchedName, startRange, endRange);
 
   @override
-  Future<Map<String, List>> fetchSalary(int beforeXMonths) async =>
+  Future<Salary> fetchSalary(int beforeXMonths) async =>
       await _employeeServices.fetchSalary(beforeXMonths);
 
   @override

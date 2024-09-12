@@ -120,7 +120,7 @@ class EmployeePrivate implements EmployeeServices {
   }
 
   @override
-  Future<Map<String, List>> fetchSalary(int beforeXMonths) async {
+  Future<Salary> fetchSalary(int beforeXMonths) async {
     final timeIntervalStringFormate = _getTimeInterval(beforeXMonths);
     try {
       final data = await supabase
@@ -140,10 +140,10 @@ class EmployeePrivate implements EmployeeServices {
 
       Salary salary = Salary(product: productList, project: projectList);
 
-      return salary.toMap();
+      return salary;
     } catch (e) {
       log(e.toString());
-      return {};
+      return Salary(product: [], project: []);
     }
   }
 

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hr_dashboard/model/pie_chart_data_model.dart';
-import 'package:hr_dashboard/services/employee_private.dart';
-import 'package:hr_dashboard/services/employee_public.dart';
 import 'package:hr_dashboard/view/widgets/drop_down_menu/months_dd_menu_widget.dart';
 import 'package:hr_dashboard/view/widgets/legeneds/graph_legends.dart';
 import 'package:hr_dashboard/view/widgets/pie_chart/pie_chart.dart';
+import 'package:hr_dashboard/view_model/employee_pie_chart_notifier.dart';
+import 'package:hr_dashboard/view_model/pie_chart_data_notifier.dart';
 
 class JobSummary extends StatelessWidget {
   const JobSummary({super.key});
@@ -38,21 +39,42 @@ class JobSummary extends StatelessWidget {
   }
 }
 
-class _PieContainer extends StatefulWidget {
+class _PieContainer extends ConsumerStatefulWidget {
   final String containerTitle;
   const _PieContainer({required this.containerTitle});
 
   @override
-  State<_PieContainer> createState() => _PieContainerState();
+  ConsumerState<ConsumerStatefulWidget> createState() => __PieContainerState();
 }
 
-class _PieContainerState extends State<_PieContainer> {
-  EmployeePublic emp = EmployeePublic(EmployeePrivate());
+class __PieContainerState extends ConsumerState<_PieContainer> {
   int timeInterval = 0;
+
+  @override
+  void initState() {
+    _fetchData();
+    super.initState();
+  }
+
+  _fetchData() {
+    if (widget.containerTitle == 'Total Employee') {
+      ref
+          .read(employeeChartDataProvider.notifier)
+          .getPieChartData(timeInterval);
+    } else if (widget.containerTitle == 'Job Summary') {
+      ref.read(pieChartDataProvider.notifier).getPieChartData(timeInterval);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-
+    late final PieChartData data;
+    if (widget.containerTitle == 'Total Employee') {
+      data = ref.watch(employeeChartDataProvider);
+    } else if (widget.containerTitle == 'Job Summary') {
+      data = ref.watch(pieChartDataProvider);
+    }
     return Container(
       width: (size.width >= 990) ? size.width * 0.25 : size.width * 0.8,
       height: 350,
@@ -64,25 +86,14 @@ class _PieContainerState extends State<_PieContainer> {
         borderRadius: BorderRadius.circular(16),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 10),
-      child: FutureBuilder(
-        future: (widget.containerTitle == 'Total Employee')
-            ? emp.fetchEmployeeChartData(timeInterval)
-            : emp.fetchJobSummary(timeInterval),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final data = snapshot.data!;
-            return _PieChartRepresentation(
-              data: data,
-              containerTitle: widget.containerTitle,
-              updateInterval: (interval) {
-                setState(() {
-                  timeInterval = interval;
-                });
-              },
-            );
-          } else {
-            return const SizedBox();
-          }
+      child: _PieChartRepresentation(
+        data: data,
+        containerTitle: widget.containerTitle,
+        updateInterval: (interval) {
+          setState(() {
+            timeInterval = interval;
+          });
+          _fetchData();
         },
       ),
     );
