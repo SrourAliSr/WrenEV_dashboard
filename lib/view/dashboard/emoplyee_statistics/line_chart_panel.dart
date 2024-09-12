@@ -5,7 +5,8 @@ import 'package:hr_dashboard/view/widgets/legeneds/graph_legends.dart';
 import 'package:hr_dashboard/view/widgets/line_chart/team_performance_chart.dart';
 
 class LineChartPanel extends StatefulWidget {
-  const LineChartPanel({super.key});
+  final void Function(int interval) setTimeInterval;
+  const LineChartPanel({super.key, required this.setTimeInterval});
 
   @override
   State<LineChartPanel> createState() => _LineChartPanelState();
@@ -41,10 +42,12 @@ class _LineChartPanelState extends State<LineChartPanel> {
             if (size.width >= 990)
               MonthsDropDownMenuWidget(
                 beforeXMonths: (x) {
+                  widget.setTimeInterval(x);
                   setState(() {
                     beforeXMonths = x;
                   });
                 },
+                isAllTime: false,
               ),
           ],
         ),
@@ -55,10 +58,13 @@ class _LineChartPanelState extends State<LineChartPanel> {
         if (size.width < 990)
           MonthsDropDownMenuWidget(
             beforeXMonths: (x) {
+              widget.setTimeInterval(x);
+
               setState(() {
                 beforeXMonths = x;
               });
             },
+            isAllTime: false,
           ),
         const SizedBox(
           height: 30,

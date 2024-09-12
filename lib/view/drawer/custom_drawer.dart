@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hr_dashboard/view/drawer/dashboard_button.dart';
 import 'package:hr_dashboard/view/drawer/drawer_items.dart';
 import 'package:hr_dashboard/view/drawer/item_tiles.dart';
+import 'package:hr_dashboard/view/widgets/dark_light/dark_ligh_widget.dart';
 
 class SliderContent extends StatelessWidget {
   final void Function() closeDrawer;
@@ -103,19 +104,7 @@ class SliderContent extends StatelessWidget {
                           iconData: Icons.settings_outlined,
                         ),
                         const SizedBox(height: 24),
-                        Row(
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {},
-                              child: const Text('Light'),
-                            ),
-                            const SizedBox(width: 10),
-                            ElevatedButton(
-                              onPressed: () {},
-                              child: const Text('Dark'),
-                            ),
-                          ],
-                        ),
+                        const DarkLightSwitcher(),
                       ],
                     ),
                   ],

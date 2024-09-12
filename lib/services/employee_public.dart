@@ -1,3 +1,6 @@
+import 'package:hr_dashboard/model/employee_model.dart';
+import 'package:hr_dashboard/model/employee_statistics_model.dart';
+import 'package:hr_dashboard/model/pie_chart_data_model.dart';
 import 'package:hr_dashboard/services/abstract_employee.dart';
 
 class EmployeePublic implements EmployeeServices {
@@ -6,22 +9,29 @@ class EmployeePublic implements EmployeeServices {
   EmployeePublic(this._employeeServices);
 
   @override
-  Future<List> fetchEmployeeChartData() async =>
-      await _employeeServices.fetchEmployeeChartData();
+  Future<PieChartData> fetchEmployeeChartData(int beforeXMonths) async =>
+      await _employeeServices.fetchEmployeeChartData(beforeXMonths);
 
   @override
-  Future<Map> fetchEmployeeStatistics() async =>
-      await _employeeServices.fetchEmployeeStatistics();
+  Future<EmployeeStatisticsModel> fetchEmployeeStatistics(
+          int beforeXMonths) async =>
+      await _employeeServices.fetchEmployeeStatistics(beforeXMonths);
 
   @override
-  Future<List> fetchEmployees() async =>
-      await _employeeServices.fetchEmployees();
-
-  @override
-  Future<List> fetchJobSummary() async =>
-      await _employeeServices.fetchJobSummary();
+  Future<List<Employee>> fetchEmployees(
+          String? searchedName, int startRange, int endRange) async =>
+      await _employeeServices.fetchEmployees(
+          searchedName, startRange, endRange);
 
   @override
   Future<Map<String, List>> fetchSalary(int beforeXMonths) async =>
       await _employeeServices.fetchSalary(beforeXMonths);
+
+  @override
+  Future<PieChartData> fetchJobSummary(int beforeXMonths) async =>
+      await _employeeServices.fetchJobSummary(beforeXMonths);
+
+  @override
+  Future<int> get getEmployeeCount async =>
+      await _employeeServices.getEmployeeCount;
 }

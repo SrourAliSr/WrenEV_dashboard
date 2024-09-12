@@ -36,7 +36,7 @@ class _DashBoardViewState extends State<DashBoardView> {
       body: SliderDrawer(
         key: drawerKey,
         isDraggable: false,
-        appBar: WideAppBar(
+        appBar: CustomAppBar(
           drawerTriggered: () {
             drawerKey.currentState?.toggle();
             setState(

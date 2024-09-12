@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hr_dashboard/view/widgets/searchBar/search_bar_widget.dart';
 
-class WideAppBar extends StatelessWidget implements PreferredSizeWidget {
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final void Function() drawerTriggered;
   final bool isDrawerClosed;
-  const WideAppBar({
+  const CustomAppBar({
     super.key,
     required this.drawerTriggered,
     required this.isDrawerClosed,
@@ -31,8 +31,7 @@ class WideAppBar extends StatelessWidget implements PreferredSizeWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            //if (width > 560) const _SearchBar(),
-            if (width > 560)
+            if (width > 570)
               const SizedBox(
                 width: 300,
                 child: SearchBarWidget(

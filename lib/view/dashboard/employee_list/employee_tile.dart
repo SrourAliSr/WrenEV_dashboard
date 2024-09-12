@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 class EmployeeTile extends StatefulWidget {
+  final String? profileUrl;
   final String name;
   final String email;
   final String jobTitle;
@@ -10,6 +11,7 @@ class EmployeeTile extends StatefulWidget {
   final String office;
   const EmployeeTile({
     super.key,
+    required this.profileUrl,
     required this.name,
     required this.email,
     required this.jobTitle,
@@ -54,41 +56,54 @@ class _EmployeeTileState extends State<EmployeeTile> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: [
-            Row(
-              children: [
-                const CircleAvatar(
-                  radius: 12,
-                  child: Image(
-                    image: AssetImage(
-                      'assets/icons/profile.png',
-                    ),
-                    width: 24,
-                    height: 24,
-                  ),
-                ),
-                const SizedBox(
-                  width: 5,
-                ),
-                Column(
-                  children: [
-                    AutoSizeText(
-                      widget.name,
-                      maxFontSize: 12,
-                      minFontSize: 9,
-                    ),
-                    AutoSizeText(
-                      widget.email,
-                      maxFontSize: 10,
-                      minFontSize: 6,
-                      style: const TextStyle(
-                        color: Color(
-                          0xFFA0AEC0,
+            Expanded(
+              child: Row(
+                children: [
+                  (widget.profileUrl == null)
+                      ? const Image(
+                          image: AssetImage(
+                            'assets/icons/profile.png',
+                          ),
+                          width: 24,
+                          height: 24,
+                        )
+                      : ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
+                          child: Image(
+                            image: NetworkImage(
+                              widget.profileUrl!,
+                            ),
+                            width: 24,
+                            height: 24,
+                          ),
                         ),
-                      ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        AutoSizeText(
+                          widget.name,
+                          maxFontSize: 12,
+                          minFontSize: 9,
+                        ),
+                        AutoSizeText(
+                          widget.email,
+                          maxFontSize: 10,
+                          minFontSize: 6,
+                          style: const TextStyle(
+                            color: Color(
+                              0xFFA0AEC0,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
             Expanded(
               child: AutoSizeText(

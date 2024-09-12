@@ -2,7 +2,16 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class SummaryPieChart extends StatefulWidget {
-  const SummaryPieChart({super.key});
+  final List<double> data;
+  final List<Color> colors;
+  final String midText;
+  final String midTextValue;
+  const SummaryPieChart(
+      {super.key,
+      required this.data,
+      required this.midText,
+      required this.midTextValue,
+      required this.colors});
 
   @override
   State<SummaryPieChart> createState() => _SummaryPieChartState();
@@ -34,50 +43,27 @@ class _SummaryPieChartState extends State<SummaryPieChart> {
                 }
               },
             ),
-            sections: [
-              _pSectionData(
+            sections: List.generate(
+              widget.data.length,
+              (index) => _pSectionData(
                 radius: 35,
-                value: 10,
-                color: Colors.red,
-                index: 0,
+                value: widget.data[index],
+                color: widget.colors[index],
+                index: index,
               ),
-              _pSectionData(
-                radius: 35,
-                color: Colors.yellow,
-                value: 50,
-                index: 1,
-              ),
-              _pSectionData(
-                radius: 35,
-                color: Colors.orange,
-                value: 20,
-                index: 2,
-              ),
-              _pSectionData(
-                radius: 35,
-                color: Colors.blue,
-                value: 10,
-                index: 3,
-              ),
-              _pSectionData(
-                radius: 35,
-                color: Colors.purple,
-                value: 10,
-                index: 4,
-              ),
-            ],
+            ),
           ),
         ),
-        const Column(
+        Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              '121',
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+              widget.midTextValue,
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
             ),
             Text(
-              'Total Emp',
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
+              widget.midText,
+              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
             ),
           ],
         )

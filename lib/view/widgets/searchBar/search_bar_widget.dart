@@ -4,11 +4,13 @@ class SearchBarWidget extends StatelessWidget {
   final bool isIconPrefix;
   final bool withBorders;
   final Color? backGroundColor;
+  final TextEditingController? controller;
   const SearchBarWidget({
     super.key,
     required this.isIconPrefix,
     this.backGroundColor,
     required this.withBorders,
+    this.controller,
   });
 
   @override
@@ -25,6 +27,7 @@ class SearchBarWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: TextField(
+        controller: controller,
         maxLines: 1,
         style: const TextStyle(
           fontSize: 14,

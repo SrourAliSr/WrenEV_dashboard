@@ -1,12 +1,18 @@
+import 'package:hr_dashboard/model/employee_model.dart';
+import 'package:hr_dashboard/model/employee_statistics_model.dart';
+import 'package:hr_dashboard/model/pie_chart_data_model.dart';
+
 abstract class EmployeeServices {
   //employee statstics panel
-  Future<Map> fetchEmployeeStatistics();
+  Future<EmployeeStatisticsModel> fetchEmployeeStatistics(int beforeXMonths);
   Future<Map<String, List>> fetchSalary(int beforeXMonths);
 
   //employee panel
-  Future<List> fetchEmployees();
+  Future<List<Employee>> fetchEmployees(
+      String? searchedName, int startRange, int endRange);
+  Future<int> get getEmployeeCount;
 
   //chart panel
-  Future<List> fetchEmployeeChartData();
-  Future<List> fetchJobSummary();
+  Future<PieChartData> fetchEmployeeChartData(int beforeXMonths);
+  Future<PieChartData> fetchJobSummary(int beforeXMonths);
 }

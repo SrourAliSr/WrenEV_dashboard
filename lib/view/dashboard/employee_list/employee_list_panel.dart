@@ -4,13 +4,39 @@ import 'package:hr_dashboard/view/dashboard/employee_list/employees_list.dart';
 import 'package:hr_dashboard/view/widgets/drop_down_menu/generic_drop_down_menu.dart';
 import 'package:hr_dashboard/view/widgets/searchBar/search_bar_widget.dart';
 
-class EmployeeListPanel extends StatelessWidget {
+class EmployeeListPanel extends StatefulWidget {
   const EmployeeListPanel({super.key});
+
+  @override
+  State<EmployeeListPanel> createState() => _EmployeeListPanelState();
+}
+
+class _EmployeeListPanelState extends State<EmployeeListPanel> {
+  late final TextEditingController _controller;
+
+  String? searchedName;
+
+  @override
+  void initState() {
+    _controller = TextEditingController();
+
+    _controller.addListener(() {
+      setState(() {
+        searchedName = _controller.text;
+      });
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-
     const double horizantalSpace = 24;
 
     return Container(
@@ -20,12 +46,12 @@ class EmployeeListPanel extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
       ),
-      child: const Column(
+      child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              AutoSizeText(
+              const AutoSizeText(
                 'Employee',
                 maxFontSize: 32,
                 minFontSize: 24,
@@ -34,13 +60,14 @@ class EmployeeListPanel extends StatelessWidget {
               SearchBarWidget(
                 isIconPrefix: false,
                 withBorders: true,
+                controller: _controller,
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: horizantalSpace,
           ),
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GenericDropDownMenue(
@@ -63,10 +90,12 @@ class EmployeeListPanel extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: horizantalSpace,
           ),
-          EmployeesList(),
+          EmployeesList(
+            searchedName: searchedName,
+          ),
         ],
       ),
     );
