@@ -9,7 +9,13 @@ import 'package:hr_dashboard/view_model/employee_list_notifier.dart';
 
 class EmployeesList extends ConsumerStatefulWidget {
   final String? searchedName;
-  const EmployeesList({required this.searchedName, super.key});
+  final String office;
+  final String jobTitle;
+  const EmployeesList(
+      {required this.searchedName,
+      required this.office,
+      required this.jobTitle,
+      super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _EmployeesListState();
@@ -26,15 +32,20 @@ class _EmployeesListState extends ConsumerState<EmployeesList> {
   }
 
   void _fetchEmployee() {
-    ref
-        .read(employeeListProvider.notifier)
-        .getEmployeesList(widget.searchedName, startRange, endRange);
+    ref.read(employeeListProvider.notifier).getEmployeesList(
+        widget.searchedName,
+        startRange,
+        endRange,
+        widget.office,
+        widget.jobTitle);
   }
 
   @override
   void didUpdateWidget(covariant EmployeesList oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.searchedName != oldWidget.searchedName) {
+    if (widget.searchedName != oldWidget.searchedName ||
+        oldWidget.office != widget.office ||
+        oldWidget.jobTitle != widget.jobTitle) {
       _fetchEmployee();
     }
   }

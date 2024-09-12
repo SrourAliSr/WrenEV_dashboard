@@ -1,11 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hr_dashboard/model/employee_statistics_model.dart';
-import 'package:hr_dashboard/services/employee_private.dart';
-import 'package:hr_dashboard/services/employee_public.dart';
+import 'package:hr_dashboard/services/dashboard_private.dart';
+import 'package:hr_dashboard/services/dashboard_public.dart';
 
 class EmployeeStatisticsNotifier
     extends StateNotifier<EmployeeStatisticsModel> {
-  final EmployeePublic emp;
+  final DashboardPublic emp;
   EmployeeStatisticsNotifier(this.emp)
       : super(
           EmployeeStatisticsModel(
@@ -28,5 +28,5 @@ class EmployeeStatisticsNotifier
 final employeeStatisticsProvider =
     StateNotifierProvider<EmployeeStatisticsNotifier, EmployeeStatisticsModel>(
         (ref) {
-  return EmployeeStatisticsNotifier(EmployeePublic(EmployeePrivate()));
+  return EmployeeStatisticsNotifier(DashboardPublic(DashboardPrivate()));
 });

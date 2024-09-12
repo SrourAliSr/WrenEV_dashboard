@@ -1,25 +1,31 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hr_dashboard/model/employee_drop_down_items_model.dart';
 import 'package:hr_dashboard/view/dashboard/employee_list/employees_list.dart';
 import 'package:hr_dashboard/view/widgets/drop_down_menu/generic_drop_down_menu.dart';
 import 'package:hr_dashboard/view/widgets/searchBar/search_bar_widget.dart';
+import 'package:hr_dashboard/view_model/employee_drop_down_notifier.dart';
 
-class EmployeeListPanel extends StatefulWidget {
+class EmployeeListPanel extends ConsumerStatefulWidget {
   const EmployeeListPanel({super.key});
 
   @override
-  State<EmployeeListPanel> createState() => _EmployeeListPanelState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _EmployeeListPanelState();
 }
 
-class _EmployeeListPanelState extends State<EmployeeListPanel> {
+class _EmployeeListPanelState extends ConsumerState<EmployeeListPanel> {
   late final TextEditingController _controller;
+  int officeIndex = 0;
+  int jobTitleIndex = 0;
 
   String? searchedName;
 
   @override
   void initState() {
     _controller = TextEditingController();
-
+    _fetchData();
     _controller.addListener(() {
       setState(() {
         searchedName = _controller.text;
@@ -34,9 +40,15 @@ class _EmployeeListPanelState extends State<EmployeeListPanel> {
     super.dispose();
   }
 
+  void _fetchData() {
+    ref.read(employeeDropDownItemsProvider.notifier).getMenuItems();
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    final EmployeeDropDownItemsModel data =
+        ref.watch(employeeDropDownItemsProvider);
     const double horizantalSpace = 24;
 
     return Container(
@@ -67,26 +79,32 @@ class _EmployeeListPanelState extends State<EmployeeListPanel> {
           const SizedBox(
             height: horizantalSpace,
           ),
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GenericDropDownMenue(
-                menuItems: ["All Offices", "Unpixel Office"],
-                menuLength: 2,
+                menuItems: data.officeItems,
+                menuLength: data.officeItems.length,
+                type: 'office',
+                selectedIndex: (selectedIndex) => setState(() {
+                  officeIndex = selectedIndex;
+                }),
               ),
               GenericDropDownMenue(
-                menuItems: [
-                  "All Job Titles",
-                  "UI UX Designer",
-                  "Graphic Designer"
-                ],
-                menuLength: 3,
+                menuItems: data.jobTitleItems,
+                menuLength: data.jobTitleItems.length,
+                type: 'Job Title',
+                selectedIndex: (selectedIndex) => setState(() {
+                  jobTitleIndex = selectedIndex;
+                }),
               ),
               GenericDropDownMenue(
-                menuItems: [
+                menuItems: const [
                   "All Status",
                 ],
                 menuLength: 1,
+                type: "Status",
+                selectedIndex: (selectedIndex) => 0,
               ),
             ],
           ),
@@ -95,6 +113,11 @@ class _EmployeeListPanelState extends State<EmployeeListPanel> {
           ),
           EmployeesList(
             searchedName: searchedName,
+            office:
+                (officeIndex != 0) ? data.officeItems[officeIndex - 1] : 'All',
+            jobTitle: (jobTitleIndex != 0)
+                ? data.jobTitleItems[jobTitleIndex - 1]
+                : 'All',
           ),
         ],
       ),

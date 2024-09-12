@@ -1,13 +1,14 @@
 import 'dart:developer';
 
+import 'package:hr_dashboard/model/employee_drop_down_items_model.dart';
 import 'package:hr_dashboard/model/employee_model.dart';
 import 'package:hr_dashboard/model/employee_statistics_model.dart';
 import 'package:hr_dashboard/model/salary_model.dart';
 import 'package:hr_dashboard/model/pie_chart_data_model.dart';
-import 'package:hr_dashboard/services/abstract_employee.dart';
+import 'package:hr_dashboard/services/abstract_dashboard.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class EmployeePrivate implements EmployeeServices {
+class DashboardPrivate implements DashboardServices {
   final supabase = Supabase.instance.client;
 
   //employee statistics panel logic
@@ -149,21 +150,28 @@ class EmployeePrivate implements EmployeeServices {
 
 //Employee panel functions
   @override
-  Future<List<Employee>> fetchEmployees(
-      String? searchedName, int startRange, int endRange) async {
-    late final List employees;
+  Future<List<Employee>> fetchEmployees(String? searchedName, int startRange,
+      int endRange, String office, String jobTitle) async {
+    late List employees;
     if (searchedName != null && searchedName.isNotEmpty) {
-      //filter items acording the name using the i like for case unsensetive
       employees = await supabase
           .from('Employee')
           .select()
           .ilike('name', '%$searchedName%')
           .range(startRange, endRange);
     } else {
-      //selecte all the employees whoes in range of "start range" till "end range"
       employees =
           await supabase.from('Employee').select().range(startRange, endRange);
     }
+
+    if (office != "All") {
+      employees = employees.where((e) => e['office'] == office).toList();
+    }
+
+    if (jobTitle != "All") {
+      employees = employees.where((e) => e['job_title'] == jobTitle).toList();
+    }
+
     final List<Employee> employeeList = employees
         .map(
           (e) => Employee(
@@ -179,6 +187,26 @@ class EmployeePrivate implements EmployeeServices {
         .toList();
     return employeeList;
   }
+
+  @override
+  Future<EmployeeDropDownItemsModel> getEmployeeDropDownItems() async {
+    final data = await supabase.from('Employee').select('job_title, office');
+
+    final officeItems = <String>{};
+    final jobTitleItems = <String>{};
+
+    for (var item in data) {
+      officeItems.add(item['office'] as String);
+      jobTitleItems.add(item['job_title'] as String);
+    }
+
+    return EmployeeDropDownItemsModel(
+      officeItems: officeItems.toList(),
+      jobTitleItems: jobTitleItems.toList(),
+    );
+  }
+
+  //pie chart data
 
   @override
   Future<PieChartData> fetchEmployeeChartData(int beforeXMonths) async {

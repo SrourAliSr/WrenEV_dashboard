@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hr_dashboard/services/employee_private.dart';
-import 'package:hr_dashboard/services/employee_public.dart';
+import 'package:hr_dashboard/services/dashboard_private.dart';
+import 'package:hr_dashboard/services/dashboard_public.dart';
 
 class NumberRowListNotifier extends StateNotifier<int> {
-  final EmployeePublic emp;
+  final DashboardPublic emp;
   NumberRowListNotifier(this.emp) : super(0);
 
   Future<void> getEmployeeCount() async {
@@ -14,8 +14,8 @@ class NumberRowListNotifier extends StateNotifier<int> {
 
 final numberRowListProvider = StateNotifierProvider<NumberRowListNotifier, int>(
   (ref) => NumberRowListNotifier(
-    EmployeePublic(
-      EmployeePrivate(),
+    DashboardPublic(
+      DashboardPrivate(),
     ),
   ),
 );

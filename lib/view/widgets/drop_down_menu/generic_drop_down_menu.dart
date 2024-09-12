@@ -4,10 +4,14 @@ import 'package:flutter/material.dart';
 class GenericDropDownMenue extends StatefulWidget {
   final List<String> menuItems;
   final int menuLength;
+  final String type;
+  final void Function(int selectedIndex) selectedIndex;
   const GenericDropDownMenue({
     super.key,
     required this.menuItems,
     required this.menuLength,
+    required this.type,
+    required this.selectedIndex,
   });
 
   @override
@@ -50,12 +54,14 @@ class GenericDropDownMenueState extends State<GenericDropDownMenue> {
           underline: const SizedBox(),
           value: initIndex,
           items: List.generate(
-            widget.menuLength,
+            widget.menuLength + 1,
             (index) {
               return DropdownMenuItem(
                 value: index,
                 child: AutoSizeText(
-                  widget.menuItems[index],
+                  (index == 0)
+                      ? 'All ${widget.type}'
+                      : widget.menuItems[index - 1],
                   maxFontSize: 14,
                   minFontSize: 10,
                   style: const TextStyle(fontWeight: FontWeight.w500),
@@ -65,6 +71,7 @@ class GenericDropDownMenueState extends State<GenericDropDownMenue> {
           ),
           onChanged: (value) {
             if (value != null) {
+              widget.selectedIndex(value);
               setState(
                 () {
                   initIndex = value;

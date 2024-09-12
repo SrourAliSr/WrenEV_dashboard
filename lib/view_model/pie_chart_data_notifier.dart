@@ -1,10 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hr_dashboard/model/pie_chart_data_model.dart';
-import 'package:hr_dashboard/services/employee_private.dart';
-import 'package:hr_dashboard/services/employee_public.dart';
+import 'package:hr_dashboard/services/dashboard_private.dart';
+import 'package:hr_dashboard/services/dashboard_public.dart';
 
 class PieChartDataNotifier extends StateNotifier<PieChartData> {
-  final EmployeePublic emp;
+  final DashboardPublic emp;
 
   PieChartDataNotifier(this.emp)
       : super(
@@ -27,5 +27,5 @@ class PieChartDataNotifier extends StateNotifier<PieChartData> {
 
 final pieChartDataProvider =
     StateNotifierProvider<PieChartDataNotifier, PieChartData>((ref) {
-  return PieChartDataNotifier(EmployeePublic(EmployeePrivate()));
+  return PieChartDataNotifier(DashboardPublic(DashboardPrivate()));
 });

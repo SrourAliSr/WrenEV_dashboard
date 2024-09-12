@@ -1,10 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hr_dashboard/model/salary_model.dart';
-import 'package:hr_dashboard/services/employee_private.dart';
-import 'package:hr_dashboard/services/employee_public.dart';
+import 'package:hr_dashboard/services/dashboard_private.dart';
+import 'package:hr_dashboard/services/dashboard_public.dart';
 
 class SalaryNotifier extends StateNotifier<Salary> {
-  final EmployeePublic emp;
+  final DashboardPublic emp;
 
   SalaryNotifier(this.emp) : super(Salary(product: [], project: []));
 
@@ -16,7 +16,7 @@ class SalaryNotifier extends StateNotifier<Salary> {
 final salaryProvider =
     StateNotifierProvider.family<SalaryNotifier, Salary, int>(
         (ref, timeInterval) {
-  final notifier = SalaryNotifier(EmployeePublic(EmployeePrivate()));
+  final notifier = SalaryNotifier(DashboardPublic(DashboardPrivate()));
 
   notifier.getSalary(timeInterval);
 
