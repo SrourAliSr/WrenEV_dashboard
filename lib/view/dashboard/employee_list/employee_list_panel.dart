@@ -17,6 +17,8 @@ class EmployeeListPanel extends ConsumerStatefulWidget {
 
 class _EmployeeListPanelState extends ConsumerState<EmployeeListPanel> {
   late final TextEditingController _controller;
+  late bool showSearchBar;
+
   int officeIndex = 0;
   int jobTitleIndex = 0;
 
@@ -24,13 +26,17 @@ class _EmployeeListPanelState extends ConsumerState<EmployeeListPanel> {
 
   @override
   void initState() {
-    _controller = TextEditingController();
     _fetchData();
+
+    _controller = TextEditingController();
+
     _controller.addListener(() {
       setState(() {
         searchedName = _controller.text;
       });
     });
+
+    showSearchBar = false;
     super.initState();
   }
 
@@ -55,7 +61,9 @@ class _EmployeeListPanelState extends ConsumerState<EmployeeListPanel> {
       width: (size.width >= 990) ? size.width * 0.63 : size.width * 0.9,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: (Theme.of(context).brightness == Brightness.light)
+            ? Colors.white
+            : const Color.fromARGB(255, 43, 59, 80),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
@@ -69,11 +77,30 @@ class _EmployeeListPanelState extends ConsumerState<EmployeeListPanel> {
                 minFontSize: 24,
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              SearchBarWidget(
-                isIconPrefix: false,
-                withBorders: true,
-                controller: _controller,
-              ),
+              if (size.width > 990)
+                SearchBarWidget(
+                  isIconPrefix: false,
+                  withBorders: true,
+                  controller: _controller,
+                ),
+              if (size.width < 990)
+                AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 360),
+                  child: (showSearchBar)
+                      ? SearchBarWidget(
+                          isIconPrefix: false,
+                          withBorders: true,
+                          controller: _controller,
+                        )
+                      : IconButton(
+                          onPressed: () {
+                            setState(() {
+                              showSearchBar = !showSearchBar;
+                            });
+                          },
+                          icon: const Icon(Icons.search),
+                        ),
+                )
             ],
           ),
           const SizedBox(

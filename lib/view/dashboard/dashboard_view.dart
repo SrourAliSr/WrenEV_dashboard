@@ -58,7 +58,9 @@ class _DashBoardViewState extends State<DashBoardView> {
           },
         ),
         child: Container(
-          color: const Color(0xFFe5e5e5),
+          color: (Theme.of(context).brightness == Brightness.light)
+              ? const Color(0xFFe5e5e5)
+              : const Color(0xFF1F2937),
           width: double.infinity,
           padding: const EdgeInsets.symmetric(
             horizontal: 56.0,

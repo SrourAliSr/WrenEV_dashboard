@@ -5,9 +5,11 @@ import 'package:pagination_flutter/pagination.dart';
 
 class EmployeeNumberRow extends ConsumerStatefulWidget {
   final void Function(int multiplier) nextPage;
+  final int rangeBoundary;
   const EmployeeNumberRow({
     super.key,
     required this.nextPage,
+    required this.rangeBoundary,
   });
 
   @override
@@ -34,7 +36,9 @@ class _EmployeeNumberRowState extends ConsumerState<EmployeeNumberRow> {
   Widget build(BuildContext context) {
     final numberRowData = ref.watch(numberRowListProvider);
     final int listLength = numberRowData;
-    final numberRowLength = (listLength / 8).round();
+    final numberRowLength =
+        (listLength / (widget.rangeBoundary != 0 ? widget.rangeBoundary : 1))
+            .round();
 
     return Pagination(
       numOfPages: numberRowLength,

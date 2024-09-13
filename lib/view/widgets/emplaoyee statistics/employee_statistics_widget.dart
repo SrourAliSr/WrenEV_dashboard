@@ -65,8 +65,12 @@ class EmployeeStatisticsWidget extends StatelessWidget {
                   height: 30,
                   decoration: BoxDecoration(
                     color: (changedPercentage >= 0)
-                        ? const Color(0xFFE7F7EF)
-                        : const Color(0xFFFFEDEC),
+                        ? (Theme.of(context).brightness == Brightness.light)
+                            ? const Color(0xFFE7F7EF)
+                            : const Color.fromARGB(255, 47, 96, 71)
+                        : (Theme.of(context).brightness == Brightness.light)
+                            ? const Color(0xFFFFEDEC)
+                            : const Color.fromARGB(255, 104, 55, 52),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Row(

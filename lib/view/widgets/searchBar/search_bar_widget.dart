@@ -19,7 +19,7 @@ class SearchBarWidget extends StatelessWidget {
 
     return Container(
       constraints: BoxConstraints(
-        maxWidth: width * 0.2,
+        maxWidth: (width >= 990) ? width * 0.2 : width * 0.4,
         maxHeight: 48,
       ),
       decoration: BoxDecoration(

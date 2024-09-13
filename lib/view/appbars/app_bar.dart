@@ -32,12 +32,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             if (width > 570)
-              const SizedBox(
+              SizedBox(
                 width: 300,
                 child: SearchBarWidget(
                   isIconPrefix: true,
                   withBorders: false,
-                  backGroundColor: Color(0xffF8F8F8),
+                  backGroundColor:
+                      (Theme.of(context).brightness == Brightness.light)
+                          ? const Color(0xffF8F8F8)
+                          : const Color(0xFF1F2937),
                 ),
               ),
             if (width > 890)
@@ -84,7 +87,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
         SizedBox(width: 24),
       ],
-      backgroundColor: const Color(0xffFFFFFF),
+      backgroundColor: (Theme.of(context).brightness == Brightness.light)
+          ? Colors.white
+          : const Color.fromARGB(255, 43, 59, 80),
       elevation: 0,
       shadowColor: Colors.white,
       scrolledUnderElevation: 0,

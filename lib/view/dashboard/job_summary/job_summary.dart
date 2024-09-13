@@ -82,7 +82,9 @@ class __PieContainerState extends ConsumerState<_PieContainer> {
           ? const EdgeInsets.only(bottom: 20)
           : const EdgeInsets.only(top: 25),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: (Theme.of(context).brightness == Brightness.light)
+            ? Colors.white
+            : const Color.fromARGB(255, 43, 59, 80),
         borderRadius: BorderRadius.circular(16),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 10),

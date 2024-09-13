@@ -25,7 +25,9 @@ class _HeadRowState extends State<HeadRow> {
     return Container(
       width: (size.width >= 990) ? size.width * 0.68 : size.width * 0.95,
       decoration: BoxDecoration(
-        color: const Color(0xFFFAFAFA),
+        color: (Theme.of(context).brightness == Brightness.light)
+            ? const Color(0xFFFAFAFA)
+            : const Color(0xFF1F2937),
         borderRadius: BorderRadius.circular(
           10,
         ),

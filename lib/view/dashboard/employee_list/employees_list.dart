@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,6 +7,7 @@ import 'package:hr_dashboard/model/employee_model.dart';
 import 'package:hr_dashboard/view/dashboard/employee_list/employee_tile.dart';
 import 'package:hr_dashboard/view/widgets/employee_table/employee_head_row.dart';
 import 'package:hr_dashboard/view/widgets/employee_table/employee_number_row.dart';
+import 'package:hr_dashboard/view/widgets/employee_table/employee_range_panel.dart';
 import 'package:hr_dashboard/view_model/employee_list_notifier.dart';
 
 class EmployeesList extends ConsumerStatefulWidget {
@@ -25,7 +28,7 @@ class _EmployeesListState extends ConsumerState<EmployeesList> {
   bool checkAllEmployees = false;
   int startRange = 0;
   int endRange = 8;
-
+  int rangeMultiplyer = 8;
   @override
   void initState() {
     _fetchEmployee();
@@ -57,7 +60,7 @@ class _EmployeesListState extends ConsumerState<EmployeesList> {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           HeadRow(
             checkAllEmployees: (check) {
@@ -86,12 +89,23 @@ class _EmployeesListState extends ConsumerState<EmployeesList> {
           EmployeeNumberRow(
             nextPage: (m) {
               setState(() {
-                endRange = (8 * m);
-                startRange = endRange - 8;
+                endRange = (rangeMultiplyer * m);
+                startRange = endRange - rangeMultiplyer;
               });
               _fetchEmployee();
             },
+            rangeBoundary: rangeMultiplyer,
           ),
+          EmployeeRangePanel(
+            changeRange: (maxRange) {
+              log('${startRange = endRange - rangeMultiplyer}');
+              setState(() {
+                endRange = startRange + maxRange;
+                rangeMultiplyer = maxRange;
+              });
+              _fetchEmployee();
+            },
+          )
         ],
       ),
     );

@@ -25,7 +25,9 @@ class SliderContent extends StatelessWidget {
     ];
 
     return Container(
-      color: Colors.white,
+      color: (Theme.of(context).brightness == Brightness.light)
+          ? Colors.white
+          : const Color.fromARGB(255, 43, 59, 80),
       padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
       //layout builder calculates the height of the widget before it is built
       child: LayoutBuilder(
