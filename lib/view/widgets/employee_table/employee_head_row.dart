@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hr_dashboard/view/widgets/employee_table/employee_head_row_title.dart';
 
 class HeadRow extends StatefulWidget {
-  const HeadRow({super.key});
+  final void Function(bool check) checkAllEmployees;
+  const HeadRow({super.key, required this.checkAllEmployees});
 
   @override
   State<HeadRow> createState() => _HeadRowState();
@@ -22,7 +23,7 @@ class _HeadRowState extends State<HeadRow> {
     final Size size = MediaQuery.of(context).size;
 
     return Container(
-      width: (size.width >= 990) ? size.width * 0.6 : size.width * 0.85,
+      width: (size.width >= 990) ? size.width * 0.68 : size.width * 0.95,
       decoration: BoxDecoration(
         color: const Color(0xFFFAFAFA),
         borderRadius: BorderRadius.circular(
@@ -42,29 +43,19 @@ class _HeadRowState extends State<HeadRow> {
               borderRadius: BorderRadius.circular(6),
             ),
             onChanged: (value) {
+              widget.checkAllEmployees(value!);
               setState(
                 () {
-                  isChecked = value!;
+                  isChecked = value;
                 },
               );
             },
           ),
-          title: SizedBox(
-            height: 30,
-            child: CustomScrollView(
-              scrollDirection: Axis.horizontal,
-              slivers: [
-                SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                        childCount: _headItems.length, (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 40,
-                    ),
-                    child: _headItems[index],
-                  );
-                }))
-              ],
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: List.generate(
+              5,
+              (index) => _headItems[index],
             ),
           )),
     );

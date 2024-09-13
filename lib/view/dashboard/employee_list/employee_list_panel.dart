@@ -79,35 +79,73 @@ class _EmployeeListPanelState extends ConsumerState<EmployeeListPanel> {
           const SizedBox(
             height: horizantalSpace,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GenericDropDownMenue(
-                menuItems: data.officeItems,
-                menuLength: data.officeItems.length,
-                type: 'office',
-                selectedIndex: (selectedIndex) => setState(() {
-                  officeIndex = selectedIndex;
-                }),
+          if (size.width >= 990)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  width: size.width * 0.18,
+                  child: GenericDropDownMenue(
+                    menuItems: data.officeItems,
+                    menuLength: data.officeItems.length,
+                    type: 'office',
+                    selectedIndex: (selectedIndex) => setState(() {
+                      officeIndex = selectedIndex;
+                    }),
+                  ),
+                ),
+                SizedBox(
+                  width: size.width * 0.18,
+                  child: GenericDropDownMenue(
+                    menuItems: data.jobTitleItems,
+                    menuLength: data.jobTitleItems.length,
+                    type: 'Job Title',
+                    selectedIndex: (selectedIndex) => setState(() {
+                      jobTitleIndex = selectedIndex;
+                    }),
+                  ),
+                ),
+                SizedBox(
+                  width: size.width * 0.18,
+                  child: GenericDropDownMenue(
+                    menuItems: const [
+                      "All Status",
+                    ],
+                    menuLength: 1,
+                    type: "Status",
+                    selectedIndex: (selectedIndex) => 0,
+                  ),
+                ),
+              ],
+            ),
+          if (size.width < 990)
+            GestureDetector(
+              onTap: () {
+                showBottomSheet(size, data, (index) {
+                  setState(() {
+                    officeIndex = index;
+                  });
+                }, (index) {
+                  setState(() {
+                    jobTitleIndex = index;
+                  });
+                });
+              },
+              child: SizedBox(
+                width: size.width * 0.8,
+                child: AbsorbPointer(
+                  absorbing: true,
+                  child: GenericDropDownMenue(
+                    menuItems: const [
+                      "Filter",
+                    ],
+                    menuLength: 0,
+                    type: "Filter",
+                    selectedIndex: (selectedIndex) => 0,
+                  ),
+                ),
               ),
-              GenericDropDownMenue(
-                menuItems: data.jobTitleItems,
-                menuLength: data.jobTitleItems.length,
-                type: 'Job Title',
-                selectedIndex: (selectedIndex) => setState(() {
-                  jobTitleIndex = selectedIndex;
-                }),
-              ),
-              GenericDropDownMenue(
-                menuItems: const [
-                  "All Status",
-                ],
-                menuLength: 1,
-                type: "Status",
-                selectedIndex: (selectedIndex) => 0,
-              ),
-            ],
-          ),
+            ),
           const SizedBox(
             height: horizantalSpace,
           ),
@@ -121,6 +159,60 @@ class _EmployeeListPanelState extends ConsumerState<EmployeeListPanel> {
           ),
         ],
       ),
+    );
+  }
+
+  Future showBottomSheet(
+      Size size,
+      EmployeeDropDownItemsModel data,
+      void Function(int index) officeSelectIndex,
+      void Function(int index) jobTitleSelectIndex) {
+    return showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return SizedBox(
+          height: 200,
+          width: double.infinity,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              SizedBox(
+                width: size.width * 0.8,
+                child: GenericDropDownMenue(
+                  menuItems: data.officeItems,
+                  menuLength: data.officeItems.length,
+                  type: 'office',
+                  selectedIndex: (selectedIndex) => setState(() {
+                    officeIndex = selectedIndex;
+                  }),
+                ),
+              ),
+              SizedBox(
+                width: size.width * 0.8,
+                child: GenericDropDownMenue(
+                  menuItems: data.jobTitleItems,
+                  menuLength: data.jobTitleItems.length,
+                  type: 'Job Title',
+                  selectedIndex: (selectedIndex) => setState(() {
+                    jobTitleIndex = selectedIndex;
+                  }),
+                ),
+              ),
+              SizedBox(
+                width: size.width * 0.8,
+                child: GenericDropDownMenue(
+                  menuItems: const [
+                    "All Status",
+                  ],
+                  menuLength: 1,
+                  type: "Status",
+                  selectedIndex: (selectedIndex) => 0,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

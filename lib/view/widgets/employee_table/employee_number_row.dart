@@ -35,6 +35,7 @@ class _EmployeeNumberRowState extends ConsumerState<EmployeeNumberRow> {
     final numberRowData = ref.watch(numberRowListProvider);
     final int listLength = numberRowData;
     final numberRowLength = (listLength / 8).round();
+
     return Pagination(
       numOfPages: numberRowLength,
       selectedPage: selectedPage,

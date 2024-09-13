@@ -22,6 +22,7 @@ class EmployeesList extends ConsumerStatefulWidget {
 }
 
 class _EmployeesListState extends ConsumerState<EmployeesList> {
+  bool checkAllEmployees = false;
   int startRange = 0;
   int endRange = 8;
 
@@ -58,20 +59,30 @@ class _EmployeesListState extends ConsumerState<EmployeesList> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const HeadRow(),
-          ...List.generate(employeeList.length, (index) {
-            final Employee employee = employeeList[index];
+          HeadRow(
+            checkAllEmployees: (check) {
+              setState(() {
+                checkAllEmployees = check;
+              });
+            },
+          ),
+          ...List.generate(
+            employeeList.length,
+            (index) {
+              final Employee employee = employeeList[index];
 
-            return EmployeeTile(
-              profileUrl: employee.profileUrl,
-              name: employee.name,
-              email: employee.email,
-              jobTitle: employee.jobTitle,
-              lineManager: employee.lineManager,
-              department: employee.department,
-              office: employee.office,
-            );
-          }),
+              return EmployeeTile(
+                profileUrl: employee.profileUrl,
+                name: employee.name,
+                email: employee.email,
+                jobTitle: employee.jobTitle,
+                lineManager: employee.lineManager,
+                department: employee.department,
+                office: employee.office,
+                isChecked: checkAllEmployees,
+              );
+            },
+          ),
           EmployeeNumberRow(
             nextPage: (m) {
               setState(() {

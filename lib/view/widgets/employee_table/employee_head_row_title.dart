@@ -9,21 +9,24 @@ class EmployeeHeadRowTitles extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        AutoSizeText(
-          title,
-          maxFontSize: 12,
-          minFontSize: 9,
-          style: const TextStyle(
-              fontWeight: FontWeight.w700, color: Color(0xFF687588)),
-        ),
-        Icon(
-          Icons.unfold_more_outlined,
-          size: width * 0.015,
-        )
-      ],
+    return Flexible(
+      child: Row(
+        children: [
+          Expanded(
+            child: AutoSizeText(
+              title,
+              maxFontSize: 12,
+              minFontSize: 9,
+              style: const TextStyle(
+                  fontWeight: FontWeight.w700, color: Color(0xFF687588)),
+            ),
+          ),
+          Icon(
+            Icons.unfold_more_outlined,
+            size: width * 0.015,
+          )
+        ],
+      ),
     );
   }
 }

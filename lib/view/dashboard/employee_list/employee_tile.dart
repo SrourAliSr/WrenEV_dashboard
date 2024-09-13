@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class EmployeeTile extends StatefulWidget {
   final String? profileUrl;
@@ -9,6 +10,7 @@ class EmployeeTile extends StatefulWidget {
   final String lineManager;
   final String department;
   final String office;
+  final bool isChecked;
   const EmployeeTile({
     super.key,
     required this.profileUrl,
@@ -18,6 +20,7 @@ class EmployeeTile extends StatefulWidget {
     required this.lineManager,
     required this.department,
     required this.office,
+    required this.isChecked,
   });
 
   @override
@@ -25,7 +28,18 @@ class EmployeeTile extends StatefulWidget {
 }
 
 class _EmployeeTileState extends State<EmployeeTile> {
-  bool isChecked = false;
+  late bool isChecked;
+  @override
+  void initState() {
+    super.initState();
+    isChecked = widget.isChecked;
+  }
+
+  @override
+  void didUpdateWidget(covariant EmployeeTile oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    isChecked = widget.isChecked;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,86 +70,75 @@ class _EmployeeTileState extends State<EmployeeTile> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: [
-            Expanded(
-              child: Row(
-                children: [
-                  (widget.profileUrl == null)
-                      ? const Image(
-                          image: AssetImage(
-                            'assets/icons/profile.png',
-                          ),
-                          width: 24,
-                          height: 24,
-                        )
-                      : ClipRRect(
-                          borderRadius: BorderRadius.circular(100),
-                          child: Image(
-                            image: NetworkImage(
-                              widget.profileUrl!,
-                            ),
-                            width: 24,
-                            height: 24,
-                          ),
-                        ),
-                  const SizedBox(
-                    width: 5,
+            (widget.profileUrl == null)
+                ? const Image(
+                    image: AssetImage(
+                      'assets/icons/profile.png',
+                    ),
+                    width: 24,
+                    height: 24,
+                  )
+                : ClipRRect(
+                    borderRadius: BorderRadius.circular(100),
+                    child: Image(
+                      image: NetworkImage(
+                        widget.profileUrl!,
+                      ),
+                      width: 24,
+                      height: 24,
+                    ),
                   ),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        AutoSizeText(
-                          widget.name,
-                          maxFontSize: 12,
-                          minFontSize: 9,
-                        ),
-                        AutoSizeText(
-                          widget.email,
-                          maxFontSize: 10,
-                          minFontSize: 6,
-                          style: const TextStyle(
-                            color: Color(
-                              0xFFA0AEC0,
-                            ),
-                          ),
-                        ),
-                      ],
+            const SizedBox(
+              width: 5,
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AutoSizeText(
+                    widget.name,
+                    maxFontSize: 12,
+                    minFontSize: 9,
+                  ),
+                  AutoSizeText(
+                    widget.email,
+                    maxFontSize: 10,
+                    minFontSize: 6,
+                    style: const TextStyle(
+                      color: Color(
+                        0xFFA0AEC0,
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
-            Expanded(
-              child: AutoSizeText(
-                widget.jobTitle,
-                maxFontSize: 12,
-                minFontSize: 9,
-                style: const TextStyle(),
-              ),
+            titlesText(
+              widget.jobTitle,
             ),
-            Expanded(
-              child: AutoSizeText(
-                widget.lineManager,
-                maxFontSize: 12,
-                minFontSize: 9,
-              ),
+            titlesText(
+              widget.lineManager,
             ),
-            Expanded(
-              child: AutoSizeText(
-                widget.department,
-                maxFontSize: 12,
-                minFontSize: 9,
-              ),
+            titlesText(
+              widget.department,
             ),
-            Expanded(
-              child: AutoSizeText(
-                widget.office,
-                maxFontSize: 12,
-                minFontSize: 9,
-              ),
+            titlesText(
+              widget.office,
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget titlesText(
+    String text,
+  ) {
+    return Expanded(
+      child: AutoSizeText(
+        text,
+        maxFontSize: 12,
+        minFontSize: 9,
       ),
     );
   }
