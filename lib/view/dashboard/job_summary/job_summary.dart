@@ -122,7 +122,7 @@ class _PieChartRepresentation extends StatelessWidget {
           children: [
             Text(
               containerTitle,
-              style: const TextStyle(fontSize: 20, color: Color(0xFF111827)),
+              style: const TextStyle(fontSize: 20),
             ),
             Flexible(
               child: Container(

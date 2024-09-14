@@ -1,0 +1,3 @@
+const supabaseUrl = 'https://etpvraggskrezgqehuvu.supabase.co';
+const supabaseAnonKey =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0cHZyYWdnc2tyZXpncWVodXZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjU3MDY0ODUsImV4cCI6MjA0MTI4MjQ4NX0.TK7GN8iRiyKFdvu2e89Sf74-sxuk0KwswFuVli5o_Zw';

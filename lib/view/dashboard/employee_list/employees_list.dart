@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -98,7 +96,6 @@ class _EmployeesListState extends ConsumerState<EmployeesList> {
           ),
           EmployeeRangePanel(
             changeRange: (maxRange) {
-              log('${startRange = endRange - rangeMultiplyer}');
               setState(() {
                 endRange = startRange + maxRange;
                 rangeMultiplyer = maxRange;

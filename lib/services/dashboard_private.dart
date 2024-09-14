@@ -114,7 +114,7 @@ class DashboardPrivate implements DashboardServices {
     final totalResigned = await supabase
         .from('Employee')
         .select()
-        .isFilter('left_date', null)
+        .not('left_date', 'is', null)
         .count(CountOption.exact)
         .then((value) => value.count);
     return resigned * 100 / totalResigned;
